@@ -15,7 +15,6 @@ import lombok.ToString;
 @ToString
 public class ProjectCommentPostReq {
     @JsonIgnore
-    @Positive
     private long commentId;
 
     @NotNull
