@@ -15,7 +15,7 @@ import java.beans.ConstructorProperties;
 @Getter
 @ToString
 @Schema(description = "프로젝트 리스트 조회 모델")
-public class ProjectGetReq  extends Paging {
+public class   ProjectGetReq  extends Paging {
     @NotNull
     @Schema(description = "검색 필터(1:제목 2:내용 3: 제목 + 내용)", example = "1")
     private int searchFilter;
