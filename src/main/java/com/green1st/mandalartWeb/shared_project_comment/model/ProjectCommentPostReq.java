@@ -3,6 +3,8 @@ package com.green1st.mandalartWeb.shared_project_comment.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -13,13 +15,14 @@ import lombok.ToString;
 @ToString
 public class ProjectCommentPostReq {
     @JsonIgnore
+    @Positive
     private long commentId;
 
-    @Schema(title = "프로젝트 PK", example = "1"
-            , requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull
+    @Positive
+    @Schema(title = "프로젝트 PK", requiredMode = Schema.RequiredMode.REQUIRED)
     private long projectId;
-    @Schema(title = "유저아이디", example = "2"
-            , requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(title = "유저아이디", requiredMode = Schema.RequiredMode.REQUIRED)
     private String userId;
     @Schema(title = "댓글 내용", example = "댓글입니다."
             , requiredMode = Schema.RequiredMode.REQUIRED)

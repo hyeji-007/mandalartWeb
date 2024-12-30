@@ -1,6 +1,8 @@
 package com.green1st.mandalartWeb.shared_project_comment.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -11,8 +13,9 @@ import java.beans.ConstructorProperties;
 @ToString
 public class ProjectCommentGetReq {
 
-    @Schema(title = "프로젝트 PK", description = "프로젝트 PK", example = "1"
-            , requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull
+    @Positive
+    @Schema(title = "프로젝트 PK", description = "프로젝트 PK", requiredMode = Schema.RequiredMode.REQUIRED)
     private long projectId;
 
     public ProjectCommentGetReq(long projectId) {
