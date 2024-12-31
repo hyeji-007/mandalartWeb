@@ -27,6 +27,8 @@ public class MyFileUtils {
         this.uploadPath = uploadPath;
     }
 
+
+
     //디렉토리 생성
     public String makeFolders(String path) {
         File file = new File(uploadPath, path);
