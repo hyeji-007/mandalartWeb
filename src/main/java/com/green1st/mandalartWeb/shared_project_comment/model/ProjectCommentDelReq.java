@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.beans.ConstructorProperties;
 
 @Getter
 @ToString

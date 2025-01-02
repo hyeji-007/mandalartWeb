@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.beans.ConstructorProperties;
-
 @Getter
 @Schema(title = "공유 프로젝트 댓글 리스트 요청")
 @ToString
