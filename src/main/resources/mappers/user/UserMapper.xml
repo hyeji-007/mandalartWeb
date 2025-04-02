@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.green1st.mandalartWeb.user.UserMapper">
+
+    <select id="checkEmailPw">
+        SELECT user_id as userId, upw
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="checkNickName">
+        SELECT nick_name as nickName
+        FROM user
+        WHERE nick_name = #{nickName}
+    </select>
+
+    <select id="checkPassWord">
+        SELECT upw
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insUser">
+        INSERT INTO user
+        SET user_id = #{userId}
+        , upw = #{upw}
+        , nick_name = #{nickName}
+        , pic = #{pic}
+    </insert>
+
+    <insert id="insAuth">
+        INSERT INTO email_verification
+        SET user_id = #{email}
+        , token = #{authKey}
+        , expired_date = #{expiryTime}
+    </insert>
+
+    <select id="selAuth" >
+        SELECT user_id, token as authKey, expired_date as expiryTime
+        FROM email_verification
+        WHERE user_id = #{email}
+    </select>
+
+    <delete id="delAuth">
+        DELETE FROM email_verification
+        WHERE user_id = #{email}
+    </delete>
+
+    <select id="checkCode">
+        SELECT COUNT(user_id)
+        FROM email_verification
+        WHERE user_id = #{userId}
+    </select>
+
+    <delete id="delUserFirst">
+        DELETE FROM user
+        WHERE user_id = #{email}
+    </delete>
+
+    <select id="selUser">
+        SELECT user_id as userId
+        , nick_name as nickName
+        , upw
+        , pic
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="selUserList">
+        SELECT b.project_id as projectId, b.title
+             , c.start_date as startDate, c.finish_date as finishDate
+        FROM user a
+        LEFT JOIN project b
+          ON a.user_id = b.user_id
+        LEFT JOIN mandalart c
+          ON b.project_id = c.project_id
+        WHERE b.project_id IN  (SELECT project_id FROM project WHERE user_id = 'mandalart502@gmail.com');
+    </select>
+
+    <select id="selUserInfo">
+        SELECT user_id as userId, nick_name as nickName, pic
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <update id="updUser">
+        UPDATE user
+        <set>
+            <if test=" newUpw != null and newUpw != '' and checkUpw != null and checkUpw != '' " >
+                upw = #{newUpw}
+            </if>
+            <if test=" nickName != null and nickName != '' ">
+                , nick_name = #{nickName}
+            </if>
+            <if test="picName != null">
+                , pic = #{picName}
+            </if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
+    <select id="checkPassWord2">
+        SELECT user_id as userId, upw
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <delete id="delMyLikeAndComment">
+        DELETE a, b
+        FROM shared_project_like a
+        JOIN shared_project_comment b
+        ON a.user_id = b.user_id
+        WHERE a.user_id = #{userId}
+    </delete>
+
+    <delete id="delSharedProjectLikeAndComment">
+        DELETE B, C
+        FROM shared_project A
+        LEFT JOIN shared_project_like B
+        ON A.project_id = B.project_id
+        LEFT JOIN shared_project_comment C
+        ON A.project_id = C.project_id
+        WHERE A.project_id IN (SELECT project_id FROM project WHERE user_id = #{userId})
+    </delete>
+
+    <delete id="delSharedProject">
+        DELETE FROM shared_project
+        WHERE project_id IN (SELECT project_id FROM project WHERE user_id = #{userId})
+    </delete>
+
+    <delete id="delMandalart">
+        DELETE FROM mandalart
+        WHERE project_id IN (SELECT project_id FROM project WHERE user_id = #{userId})
+    </delete>
+
+    <delete id="delProject">
+        DELETE FROM project
+        WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="delFindPw">
+        DELETE FROM find_password
+        WHERE user_id = #{userId}
+    </delete>
+
+    <delete id="delUser">
+        DELETE FROM user
+        WHERE user_id = #{userId}
+    </delete>
+
+<!-- 임시 비밀번호 발급-->
+    <select id="checkPasswordId">
+        SELECT user_id AS userId
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insPassword">
+        INSERT INTO find_password
+           SET user_id = #{userId}
+             , tmp_password = #{tmpPassword}
+    </insert>
+
+    <insert id="insPassword2">
+        INSERT INTO find_password (user_id, tmp_password)
+        VALUES (#{userId}, #{tmpPassword})
+            ON DUPLICATE KEY
+        UPDATE tmp_password = VALUES(tmp_password)
+    </insert>
+
+<!--임시 비밀번호로 수정-->
+    <update id="updTmpPassword">
+        UPDATE user
+        SET upw = #{tmpPassword}
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- 임시 비밀번호 발급 여부-->
+    <update id="updTmpPwFg">
+        UPDATE user A
+        LEFT JOIN find_password B
+        ON A.user_id = B.user_id
+        SET A.tmp_pw_fg = if(B.user_id IS NOT NULL, 1, 0)
+        WHERE A.user_id = #{userId}
+    </update>
+
+    <select id="selTmpPwFg">
+        SELECT tmp_pw_fg
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <update id="updTmpPasswordReissue">
+        UPDATE find_password
+           SET tmp_password = #{tmpPassword}
+         WHERE user_id = #{userId}
+    </update>
+
+</mapper>
