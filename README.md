@@ -61,7 +61,9 @@ Gradle
 #### 공유프로젝트 댓글 기능
 <img src="https://github.com/user-attachments/assets/8dafb7b7-e9b4-4e9d-9e79-fdf7cf046a50">
 
+---
 <img src="https://github.com/user-attachments/assets/51b8ed27-cc0f-4941-b048-734831aa8f6a">
+> 만다라트를 공유한 게시판에서 댓글을 등록, 조회, 수정, 삭제가 가능합니다.
 
 ## 담당 파트(권혜지)
 - 공유 프로젝트 댓글 CRUD
